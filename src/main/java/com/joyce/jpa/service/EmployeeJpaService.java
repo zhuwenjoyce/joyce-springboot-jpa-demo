@@ -13,14 +13,16 @@ public class EmployeeJpaService {
     @Autowired
     EmployeeJpaDao employeeJpaDao;
 
-    @Transactional(transactionManager = "masterTransactionManager")
+//    @Transactional(transactionManager = "masterTransactionManager")
+    @Transactional(value = "masterTransactionManager")
     public Employee 模拟正常业务(Employee e){
         Employee e2 = employeeJpaDao.save(e);
         Optional<Employee> findEmployee = employeeJpaDao.findById(e2.getId());
         return findEmployee.get();
     }
 
-    @Transactional(transactionManager = "masterTransactionManager")
+//    @Transactional(transactionManager = "masterTransactionManager")
+    @Transactional(value = "masterTransactionManager")
     public Employee 模拟业务出错_测试jpa事务_需指定事务(Employee e){
         Employee e2 = employeeJpaDao.save(e);
         int i = 1/0;

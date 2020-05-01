@@ -81,7 +81,11 @@ public class MyJpaController {
         Employee e2 = employeeJpaService.模拟正常业务(e);
         map.put("3-模拟正常业务", e2);
         List<Employee> queryList = employeeJpaDao.findByUsername(username);
-        queryList.get(0).setRemark(" from DB, and occurred error! jpa事务生效了！");
+        if(CollectionUtils.size(queryList) == 1){
+            queryList.get(0).setRemark(" from DB, and occurred error! jpa事务生效了！");
+        }else{
+            queryList.get(0).setRemark(" from DB, and occurred error! jpa事务没有生效！");
+        }
         map.put("4-findByUsername", queryList);
         return map;
     }

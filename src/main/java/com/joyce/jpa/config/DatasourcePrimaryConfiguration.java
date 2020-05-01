@@ -16,7 +16,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -66,7 +65,7 @@ public class DatasourcePrimaryConfiguration {
                 jpaProperties.getProperties(), new HibernateSettings());
     }
 
-    // 主库事务配置
+    // 主库jpa事务配置，作用于dao层
     @Primary
     @Bean("masterPlatformTM")
     public PlatformTransactionManager masterPlatformTM(@Qualifier("masterEntityManagerFactory") LocalContainerEntityManagerFactoryBean masterEntityManagerFactory) {
@@ -76,7 +75,7 @@ public class DatasourcePrimaryConfiguration {
     }
 
 //    主库Repository的包名
-    @EnableJpaRepositories(basePackages={"com.joyce.jpa.dao_primary"},//主库Repository的包名
+    @EnableJpaRepositories(basePackages={"com.joyce.jpa.dao_primary"},//主库Repository的包名，就是dao所在的包
             entityManagerFactoryRef = "masterEntityManagerFactory"
             , transactionManagerRef = "masterPlatformTM"
             ,enableDefaultTransactions = true
@@ -85,7 +84,11 @@ public class DatasourcePrimaryConfiguration {
     public class MasterConfiguration {
     }
 
-    // 主库事务配置, 这个主事务可以在service层生效： @Transactional(transactionManager = "masterTransactionManager")
+    // 主库事务配置, 这个主事务可以在service层生效：
+    // @Transactional(value = "masterTransactionManager")
+    // 或者
+    // @Transactional(transactionManager = "masterTransactionManager")
+    // 因为多数据源，所以得具体指定哪个事务
     @Bean(name = "masterTransactionManager")
     @Primary
     public DataSourceTransactionManager getMasterTransactionManager(@Qualifier("masterDataSource") DataSource dataSource) {
