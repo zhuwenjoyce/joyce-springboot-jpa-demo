@@ -3,9 +3,12 @@ package com.joyce.jpa.service;
 import com.joyce.jpa.dao_primary.EmployeeJpaDao;
 import com.joyce.jpa.domain_primary.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,4 +33,8 @@ public class EmployeeJpaService {
         return findEmployee.get();
     }
 
+    public List<Employee> jpa自带的排序方式(Integer page, Integer size){
+        List<Employee> list = employeeJpaDao.findAll(Sort.by("id").descending());
+        return list;
+    }
 }
