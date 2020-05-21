@@ -15,6 +15,12 @@ public class Employee {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "cn_name", columnDefinition=" varchar(80) COLLATE utf8_bin NOT NULL")
+    private String cnName;
+
+    @Column(name = "en_name", columnDefinition=" varchar(200) COLLATE utf8_bin NOT NULL")
+    private String en_name;
+
     @Column(name = "email")
     private String email;
 
@@ -69,5 +75,21 @@ public class Employee {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getCnName() {
+        return cnName;
+    }
+
+    public void setCnName(String cnName) {
+        this.cnName = cnName;
+    }
+
+    public String getEn_name() {
+        return en_name;
+    }
+
+    public void setEn_name(String en_name) {
+        this.en_name = en_name;
     }
 }
